@@ -1,0 +1,120 @@
+import math
+import random
+
+class TicTacToe:
+    def __init__(self):
+        self.board = [' ' for _ in range(9)]  # Create the empty board
+        self.current_winner = None
+
+    def print_board(self):
+        for row in [self.board[i * 3:(i + 1) * 3] for i in range(3)]:
+            print('| ' + ' | '.join(row) + ' |')
+
+    def available_moves(self):
+        return [i for i, spot in enumerate(self.board) if spot == ' ']
+
+    def empty_squares(self):
+        return ' ' in self.board
+
+    def num_empty_squares(self):
+        return self.board.count(' ')
+
+    def make_move(self, square, letter):
+        if self.board[square] == ' ':
+            self.board[square] = letter
+            if self.winner(square, letter):
+                self.current_winner = letter
+            return True
+        return False
+
+    def winner(self, square, letter):
+        # Check row
+        row_ind = square // 3
+        row = self.board[row_ind*3:(row_ind+1)*3]
+        if all([spot == letter for spot in row]):
+            return True
+
+        # Check column
+        col_ind = square % 3
+        column = [self.board[col_ind+i*3] for i in range(3)]
+        if all([spot == letter for spot in column]):
+            return True
+
+        # Check diagonals
+        if square % 2 == 0:
+            diagonal1 = [self.board[i] for i in [0, 4, 8]]  # left diagonal
+            if all([spot == letter for spot in diagonal1]):
+                return True
+            diagonal2 = [self.board[i] for i in [2, 4, 6]]  # right diagonal
+            if all([spot == letter for spot in diagonal2]):
+                return True
+
+        return False
+
+def minimax(board, maximizer, player):
+    if board.current_winner is not None:
+        if board.current_winner == maximizer:
+            return {'position': None, 'score': 1 * (board.num_empty_squares() + 1) if maximizer == player else -1 * (board.num_empty_squares() + 1)}
+        else:
+            return {'position': None, 'score': 0}
+    if not board.empty_squares():
+        return {'position': None, 'score': 0}
+
+    if maximizer == player:
+        best = {'position': None, 'score': -math.inf}
+    else:
+        best = {'position': None, 'score': math.inf}
+
+    for possible_move in board.available_moves():
+        board.make_move(possible_move, player)
+        sim_score = minimax(board, maximizer, 'O' if player == 'X' else 'X')
+
+        # Undo move
+        board.board[possible_move] = ' '
+        board.current_winner = None
+        sim_score['position'] = possible_move
+
+        if player == maximizer:
+            if sim_score['score'] > best['score']:
+                best = sim_score
+        else:
+            if sim_score['score'] < best['score']:
+                best = sim_score
+
+    return best
+
+def play_game():
+    game = TicTacToe()
+    human_player = 'X'
+    ai_player = 'O'
+    current_player = human_player if random.choice([True, False]) else ai_player
+
+    while game.empty_squares():
+        if current_player == human_player:
+            move = None
+            while move not in range(9) or not game.make_move(move, human_player):
+                try:
+                    move = int(input('Enter your move (0-8): '))
+                except ValueError:
+                    print('Please enter a number between 0 and 8.')
+
+        else:
+            if game.num_empty_squares() == 9:
+                move = random.choice(game.available_moves())
+            else:
+                move = minimax(game, ai_player, ai_player)['position']
+            game.make_move(move, ai_player)
+            print(f'AI placed {ai_player} at position {move}')
+
+        game.print_board()
+        if game.current_winner:
+            print(f'{game.current_winner} wins!')
+            break
+
+        current_player = human_player if current_player == ai_player else ai_player
+
+    if not game.current_winner:
+        print('It\'s a tie!')
+
+if __name__ == '__main__':
+    play_game()
