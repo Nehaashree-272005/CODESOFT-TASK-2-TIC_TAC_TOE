@@ -1,18 +1,14 @@
-1. Game Representation:
-Create a representation of the game board (3x3 grid for Tic-Tac-Toe).
-Design a function to display the current state of the board.
-2. Player Input:
-Implement a function to take input from the human player.
-Validate the input to ensure it's within the board range and not already filled.
-3. AI Implementation:
-Use the Minimax algorithm to create the AI player.
-Define functions for maximizing and minimizing players (Max and Min).
-Develop a function to evaluate the game state and assign scores (win, lose, draw).
-Create the Minimax function that recursively computes the best move.
-4. Game Loop:
-Start a loop for the game.
-Alternate between the human and AI player turns until the game ends (win, lose, draw).
-Display the board after each move.
-5. Game Over:
-Implement a function to check for a win, lose, or draw condition.
-Display the result and ask if the players want to play again.
+Description:
+
+Our AI-Powered Tic-Tac-Toe game offers an engaging and challenging experience for players of all skill levels. Gone are the days of predictable moves and stalemates—our game features an intelligent AI opponent that adapts its strategy to outwit even the most seasoned players.
+
+Smart AI Opponent: Dynamic AI adapts strategy based on player moves.
+Multiple Difficulty Levels: Options for beginners to experts.
+Sleek User Interface: Modern design for intuitive gameplay.
+Interactive Experience: Drag-and-drop controls for seamless play.
+Game Statistics: Track win-loss record and average game duration.
+Customizable Settings: Adjust AI difficulty and game board size.
+Challenge Yourself: Test strategic skills against a formidable AI.
+Endless Entertainment: Varied difficulty levels for all ages.
+Skill Improvement: Enhance strategic thinking and decision-making.
+Sleek Design: Enjoy seamless gameplay with clean interface.
